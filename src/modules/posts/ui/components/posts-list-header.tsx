@@ -1,0 +1,53 @@
+"use client";
+
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { PlusIcon, XCircle } from "lucide-react";
+import { usePostsFilters } from "../../hooks/use-posts-filters";
+import { DEFAULT_PAGE } from "@/constants";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { PostsSearchFilter } from "./posts-search-filter";
+
+export const PostsListHeader = () => {
+  const [filters, setFilters] = usePostsFilters();
+
+  const isAnyFilterModified = !!filters.search;
+
+  const onClearFilters = () => {
+    setFilters({
+      search: "",
+      page: DEFAULT_PAGE,
+    });
+  };
+
+  return (
+    <div className="py-4 px-4 md:px-8 flex flex-col gap-y-8">
+      <div>
+        <h1 className="text-2xl font-bold">文章</h1>
+        <p className="text-muted-foreground ">
+          管理站点文章内容
+        </p>
+      </div>
+      <div className="flex items-center justify-between">
+        <ScrollArea>
+          <div className="flex items-center gap-x-2 p-1">
+            <PostsSearchFilter />
+            {isAnyFilterModified && (
+              <Button onClick={onClearFilters} variant="outline" size="sm">
+                <XCircle />
+                清除
+              </Button>
+            )}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+        <Button asChild className="bg-white text-black hover:bg-zinc-200 hover:text-black dark:bg-white dark:text-black dark:hover:bg-zinc-200">
+          <Link href="/dashboard/posts/new">
+            <PlusIcon />
+            新建文章
+          </Link>
+        </Button>
+      </div>
+    </div>
+  );
+};

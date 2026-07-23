@@ -1,0 +1,43 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.*
+
+# Build output
+.next
+out
+build
+
+# Version control
+.git
+.gitignore
+
+# Environment files
+.env
+.env.*
+!.env.example
+deployment-credentials.txt
+
+# IDE
+.vscode
+.idea
+.windsurf
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose*.yml
+Dockerfile
+
+# Misc
+*.md
+LICENSE
+screenshots
+cos-upload-manifest.*
+data/lanlan-city-plan.*
+scripts/photo-urls-backup.json
+.vercel
+*.tsbuildinfo
+next-env.d.ts

@@ -1,0 +1,91 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { XCircle, ArrowUpIcon, ArrowDownIcon } from "lucide-react";
+import { usePhotosFilters } from "../../hooks/use-photos-filters";
+import { DEFAULT_PAGE } from "@/constants";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { PhotosSearchFilter } from "./photos-search-filter";
+import { useModal } from "@/hooks/use-modal";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+export const PhotosListHeader = () => {
+  const modal = useModal();
+  const [filters, setFilters] = usePhotosFilters();
+
+  const isAnyFilterModified = !!filters.search;
+
+  const onClearFilters = () => {
+    setFilters({
+      search: "",
+      page: DEFAULT_PAGE,
+    });
+  };
+
+  return (
+    <>
+      <div className="py-4 px-4 md:px-8 flex flex-col gap-y-8">
+        <div>
+          <h1 className="text-2xl font-bold">照片</h1>
+          <p className="text-muted-foreground ">
+            在这里编辑相册并上传新照片
+          </p>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <ScrollArea>
+            <div className="flex items-center gap-x-2 p-1">
+              <PhotosSearchFilter />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    {filters.orderBy === "desc" ? (
+                      <>
+                        <ArrowDownIcon className="h-4 w-4" />
+                        最新优先
+                      </>
+                    ) : (
+                      <>
+                        <ArrowUpIcon className="h-4 w-4" />
+                        最早优先
+                      </>
+                    )}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuItem
+                    onClick={() => setFilters({ orderBy: "desc" })}
+                  >
+                    <ArrowDownIcon className="mr-2 h-4 w-4" />
+                    最新优先
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setFilters({ orderBy: "asc" })}
+                  >
+                    <ArrowUpIcon className="mr-2 h-4 w-4" />
+                    最早优先
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              {isAnyFilterModified && (
+                <Button onClick={onClearFilters} variant="outline" size="sm">
+                  <XCircle />
+                  清除
+                </Button>
+              )}
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+          <Button variant="default" onClick={modal.onOpen}>
+            添加照片
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+};
